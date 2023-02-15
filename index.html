@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<body>
+
+<div class="container">
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+<canvas id="speedChart" style="width:100%;max-width:600px"></canvas>
+</div>
+
+
+
+<div class="popup">
+    <div class="popup-content">
+        <p class="close">close</p>
+        <h2>Test Cases Results</h2>
+        <div class="" id="pop" style="color: green;">
+
+        </div>
+
+    </div>
+    
+</div>
+
+
+
+
+<div class="popup2">
+    <div class="popup-content2">
+        <p class="close2">close</p>
+        <h2>Test Cases Results</h2>
+        <div class="" id="pop2" style="color: green;">
+
+        </div>
+
+    </div>
+    
+</div>
+
+
+
+
+<div class="bt-container">
+    <button class="btn btn-primary"  id="button" onclick="final()">Validate single form</button>
+    <button class="btn btn-primary"  id="button2" onclick="final2()">Validate double form</button>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+var xValues = [50,60,70,80,90,100,110,120,130,140,150];
+var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
+});
+
+
+//multiline graph
+var speedCanvas = document.getElementById("speedChart");
+
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 18;
+
+var dataFirst = {
+    label: "Car A - Speed (mph)",
+    data: [0, 59, 75, 20, 20, 55, 40],
+    lineTension: 0,
+    fill: false,
+    borderColor: 'red'
+  };
+
+var dataSecond = {
+    label: "Car B - Speed (mph)",
+    data: [20, 15, 60, 60, 65, 30, 70],
+    lineTension: 0,
+    fill: false,
+  borderColor: 'blue'
+  };
+
+var speedData = {
+  labels: ["0s", "10s", "20s", "30s", "40s", "50s", "60s"],
+  datasets: [dataFirst, dataSecond]
+};
+
+var chartOptions = {
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+
+
+var doublemax1=dataFirst.data;
+var res1 = Math.max(...doublemax1)
+var doublemax2=dataSecond.data;
+var res2 = Math.max(...doublemax2)
+var doublemin1=dataFirst.data;
+var resmin1 = Math.min(...doublemin1)
+var doublemin2=dataSecond.data;
+var resmin2 = Math.min(...doublemin2)
+var doubleIndex1min = dataFirst.data.indexOf(resmin1);
+var doubleIndex2min = dataSecond.data.indexOf(resmin2);
+var doubleIndex1max = dataFirst.data.indexOf(res1);
+var doubleIndex2max = dataSecond.data.indexOf(res2);
+
+function doublecase1(){
+    var datafirstmin = 0;
+    var datasecondmin = 15;
+    if(resmin1==datafirstmin&&resmin2==datasecondmin){
+        document.getElementById("pop2").innerHTML +="<p style=\"color:green\">Doublegraph-test case 1 passed</p>";
+    }
+    else{
+        document.getElementById("pop2").innerHTML +="<p style=\"color:red\">Doublegraph-test case 1 failed</p>";
+    }
+}
+function doublecase2(){
+    var datafirstmax = 75;
+    var datasecondmax = 70;
+    if(datafirstmax==res1&&datasecondmax==res2){
+        document.getElementById("pop2").innerHTML +="<p style=\"color:green\">Doublegraph-test case 2 passed</p>";
+    }
+    else{
+        document.getElementById("pop2").innerHTML +="<p style=\"color:red\">Doublegraph-test case 2 failed</p>";
+    }
+}
+
+
+function doublecase3(){
+    
+    var doublex="0s";
+    var doublex2="10s";
+    if(doublex==speedData.labels[doubleIndex1min]&&doublex2==speedData.labels[doubleIndex2min]){
+        document.getElementById("pop2").innerHTML +="<p style=\"color:green\">Doublegraph-test case 3 passed</p>";
+    }
+    else{
+        document.getElementById("pop2").innerHTML +="<p style=\"color:green\">Doublegraph-test case 3 failed</p>";
+    }
+    
+}
+function doublecase4(){
+    var doublexmax11 = "20s"
+    var doublemax22  = "60s"
+    if(doublexmax11==speedData.labels[doubleIndex1max]&&doublemax22==speedData.labels[doubleIndex2max]){
+        document.getElementById("pop2").innerHTML +="<p style=\"color:green\">Doublegraph-test case 4 passed</p>";
+    }
+    else{
+        document.getElementById("pop2").innerHTML +="<p style=\"color:green\">Doublegraph-test case 4 failed</p>";
+    }
+}
+
+
+
+const max = Math.max(...yValues);
+const min = Math.min(...yValues);
+const minIndex  = yValues.indexOf(min);
+const maxIndex = yValues.indexOf(max);
+
+
+function testcase1(){
+    var Minvalue = 7;
+    if(min==Minvalue){
+        document.getElementById("pop").innerHTML +="<p style=\"color:green\">test case 1 passed</p>";
+    }
+    else{
+        document.getElementById("pop").innerHTML +="<p style=\"color:red\">test case 1 failed</p>";
+    }
+}
+
+function testcase2(){
+    var Maxvalue = 15;
+    if(Maxvalue==max){
+        document.getElementById("pop").innerHTML +="<p style=\"color:green\">test case 2 passed</p>";
+    }
+    else{
+        document.getElementById("pop").innerHTML +="<p style=\"color:red\">test case 2 failed</p>";
+    }
+}
+
+function testcase3(){
+    var xval = 50;
+    if(xval==xValues[minIndex]){
+        document.getElementById("pop").innerHTML +="<p style=\"color:green\">test case 3 passed</p>";
+    }
+    else{
+        document.getElementById("pop").innerHTML +="<p style=\"color:red\">test case 3 failed</p>";
+    }
+}
+
+
+function testcase4(){
+    var xvalmax = 150;
+    if(xvalmax==xValues[maxIndex]){
+        document.getElementById("pop").innerHTML +="<p style=\"color:green\">test case 4 passed</p>";
+    }
+    else{
+        document.getElementById("pop").innerHTML +="<p style=\"color:red\">test case 4 failed</p>";
+    }
+}
+
+
+
+
+function testcase5(){
+    var dup=[];
+    var index=0;
+    for(var i =0;i<yValues.length;i++){
+        for(var j=i+1;i<yValues.length;j++){
+            if(yValues[i]==yValues[j]){
+                dup[index]=yValues[i];
+                index++
+            }
+        }
+    }
+}
+
+
+
+function final(){
+    testcase1();
+    testcase2();
+    testcase3();
+    testcase4();
+}
+
+function final2(){
+    doublecase1();
+    doublecase2();
+    doublecase3();
+    doublecase4();
+}
+
+
+document.getElementById("button").addEventListener("click",function(){
+        document.querySelector(".popup").style.display="flex";
+    })
+    document.querySelector(".close").addEventListener("click",function(){
+        document.querySelector(".popup").style.display="none";
+    })
+
+    document.getElementById("button2").addEventListener("click",function(){
+        document.querySelector(".popup2").style.display="flex";
+    })
+    document.querySelector(".close2").addEventListener("click",function(){
+        document.querySelector(".popup2").style.display="none";
+    })   
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+<style>
+    body [type=button]{
+      background-color: rgb(65, 126, 65);
+      border-radius: 10px;
+      padding: 5px;
+      color: white;
+  }
+  .popup{
+      background: rgba(0,0,0,0.6);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+  }
+  .popup-content{
+      height: 380px;
+      width: 500px;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      position: relative;
+  }
+  .close{
+      position: absolute;
+      top: -4px;
+      right: -5px;
+      cursor: pointer;
+      background: red;
+      color: white;
+      border-radius: 20%;
+  }
+  .popup2{
+      background: rgba(0,0,0,0.6);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+  }
+  .popup-content2{
+      height: 380px;
+      width: 500px;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      position: relative;
+  }
+  .close2{
+      position: absolute;
+      top: -4px;
+      right: -5px;
+      cursor: pointer;
+      background: red;
+      color: white;
+      border-radius: 20%;
+  }
+  .container{
+    display: flex;
+    gap: 30px;
+  }
+  .bt-container{
+    display: flex;
+    justify-content: space-around;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+</body>
+</html>
